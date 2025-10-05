@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "quote_logger_chart.fullname" . }}
+  name: {{ include "quote-logger-chart.fullname" . }}
   labels:
     {{- include "quote_logger_chart.labels" . | nindent 4 }}
 spec:
