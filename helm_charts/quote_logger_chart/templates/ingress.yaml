@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "quote_logger_chart.fullname" . }}
+  name: {{ include "quote-logger-chart.fullname" . }}
   labels:
-    {{- include "quote_logger_chart.labels" . | nindent 4 }}
+    {{- include "quote-logger-chart.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "quote_logger_chart.fullname" $ }}
+                name: {{ include "quote-logger-chart.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

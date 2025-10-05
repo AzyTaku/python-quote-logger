@@ -3,14 +3,14 @@ kind: Deployment
 metadata:
   name: {{ include "quote-logger-chart.fullname" . }}
   labels:
-    {{- include "quote_logger_chart.labels" . | nindent 4 }}
+    {{- include "quote-logger-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "quote_logger_chart.selectorLabels" . | nindent 6 }}
+      {{- include "quote-logger-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "quote_logger_chart.labels" . | nindent 8 }}
+        {{- include "quote-logger-chart.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "quote_logger_chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "quote-logger-chart.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
