@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY quote_logger.py .
 
-CMD ["python", "quote_logger.py"]
+CMD ["python", "-u" ,"quote_logger.py"]
