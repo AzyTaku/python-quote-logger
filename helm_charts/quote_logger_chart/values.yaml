@@ -10,7 +10,7 @@ containerName: quote-logger
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: azytaku/python-quote-logger
+  repository: azytaku/quote-logger
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
@@ -61,24 +61,17 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: true
-  className: "nginx"               # set to your ingress controller class
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
-    # optional: redirect http -> https, rewrite-target, etc.
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: 3.6.40.84.nip.io
+    - host: chart-example.local
       paths:
         - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: quote-logger-quote-logger-chart
-              port:
-                number: 80
-  tls: []   # no TLS here; use next example for TLS
-
+          pathType: ImplementationSpecific
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
