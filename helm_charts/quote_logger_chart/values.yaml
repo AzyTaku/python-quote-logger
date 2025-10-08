@@ -166,3 +166,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+kube-prometheus-stack:
+  crds:
+    enabled: false
