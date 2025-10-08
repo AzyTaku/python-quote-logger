@@ -68,12 +68,12 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "8m"
     # optional: redirect http -> https, rewrite-target, etc.
   hosts:
-    - host: quote-logger.example.com
+    - host: 3.6.40.84.nip.io
       paths:
         - path: /
           pathType: Prefix
   tls: []   # no TLS here; use next example for TLS
-  
+
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
