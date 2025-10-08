@@ -61,17 +61,19 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  className: "nginx"               # set to your ingress controller class
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+    # optional: redirect http -> https, rewrite-target, etc.
   hosts:
-    - host: chart-example.local
+    - host: quote-logger.example.com
       paths:
         - path: /
-          pathType: ImplementationSpecific
-  tls: []
+          pathType: Prefix
+  tls: []   # no TLS here; use next example for TLS
+  
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
