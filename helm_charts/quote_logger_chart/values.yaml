@@ -72,6 +72,11 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          backend:
+            service:
+              name: quote-logger-quote-logger-chart
+              port:
+                number: 80
   tls: []   # no TLS here; use next example for TLS
 
   #  - secretName: chart-example-tls
