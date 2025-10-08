@@ -1,0 +1,26 @@
+kube-prometheus-stack:
+  prometheus:
+    server:
+      ingress:
+        enabled: false
+      persistentVolume:
+        enabled: false
+
+    service:
+      type: ClusterIP
+
+  nodeExporter:
+    enabled: true
+
+  kubeStateMetrics:
+    enabled: true
+
+  alertmanager:
+    enabled: false
+
+  additionalScrapeConfigs:
+    enabled: true
+    scrape_configs:
+      - job_name: 'quote-logger'
+        static_configs:
+          - targets: ['quote-logger-quote-logger-chart:80'] # Replace with your service name
