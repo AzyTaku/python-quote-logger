@@ -1,13 +1,25 @@
 loki:
+  enabled: true
   auth_enabled: false
 
   server:
     http_listen_port: 3100
 
   storage:
-    type: filesystem
+    type: boltdb-shipper
     filesystem:
       directory: /data/loki
+    bucketNames:
+      chunks: "chunks"
+      index: "index"
+
+  storage_config:
+    boltdb_shipper:
+      active_index_directory: /data/loki/index
+      cache_location: /data/loki/cache
+      shared_store: filesystem
+
+  commonConfig: {}
 
   schemaConfig:
     configs:

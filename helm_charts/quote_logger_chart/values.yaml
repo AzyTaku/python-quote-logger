@@ -170,3 +170,13 @@ affinity: {}
 kube-prometheus-stack:
   crds:
     enabled: false
+
+# loki:
+#   enabled: true
+#   storage:
+#     type: boltdb-shipper
+#     bucketNames:
+#       chunks: "chunks"
+#       index: "index"
+#     filesystem:
+#       directory: /data/loki

@@ -1,0 +1,25 @@
+{{- if .Values.loki.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: {{ .Release.Namespace }}
+data:
+  loki.yaml: |
+    server:
+      http_listen_port: {{ .Values.loki.server.http_listen_port }}
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: {{ .Values.loki.storage_config.boltdb_shipper.active_index_directory }}
+        cache_location: {{ .Values.loki.storage_config.boltdb_shipper.cache_location }}
+        shared_store: {{ .Values.loki.storage_config.boltdb_shipper.shared_store }}
+    schema_config:
+      configs:
+        - from: 2020-10-24
+          store: boltdb-shipper
+          object_store: filesystem
+          schema: v11
+          index:
+            prefix: index_
+            period: 24h
+{{- end }}
