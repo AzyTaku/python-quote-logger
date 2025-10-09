@@ -58,39 +58,3 @@ Create the name of the service account to use.
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{/*
-Get Loki storage bucket names safely with defaults
-*/}}
-{{- define "loki.bucketNames" -}}
-{{- $buckets := dict "chunks" "chunks" "index" "index" -}}
-{{- if and .Values.loki .Values.loki.storage .Values.loki.storage.bucketNames }}
-{{- $buckets = .Values.loki.storage.bucketNames }}
-{{- end }}
-{{- return $buckets -}}
-{{- end }}
-
-{{/*
-Get Loki storage config safely
-*/}}
-{{- define "loki.storageConfig" -}}
-{{- if .Values.loki.storage_config }}
-{{- .Values.loki.storage_config }}
-{{- else }}
-boltdb_shipper:
-  active_index_directory: /data/loki/index
-  cache_location: /data/loki/cache
-  shared_store: filesystem
-{{- end }}
-{{- end }}
-
-{{/*
-Get Loki common config safely
-*/}}
-{{- define "loki.commonConfig" -}}
-{{- if .Values.loki.commonConfig }}
-{{- .Values.loki.commonConfig }}
-{{- else }}
-auth_enabled: false
-{{- end }}
-{{- end }}
