@@ -1,0 +1,17 @@
+loki:
+  auth_enabled: false
+  server:
+    http_listen_port: 3100
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /data/loki
+  schemaConfig:
+    configs:
+      - from: 2020-10-24
+        store: boltdb-shipper
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
