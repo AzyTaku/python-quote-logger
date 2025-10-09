@@ -3,6 +3,10 @@ kube-prometheus-stack:
     enabled: false
 
   prometheus:
+    prometheusSpec:
+      serviceMonitorSelector: {}
+      serviceMonitorNamespaceSelector: {}
+
     server:
       ingress:
         enabled: false
