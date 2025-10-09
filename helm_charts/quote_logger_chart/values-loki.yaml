@@ -1,3 +1,4 @@
+# Not used - kept as reference
 loki:
   storage:
     type: boltdb-shipper
