@@ -67,7 +67,7 @@ Get Loki storage bucket names safely with defaults
 {{- if and .Values.loki .Values.loki.storage .Values.loki.storage.bucketNames }}
 {{- $buckets = .Values.loki.storage.bucketNames }}
 {{- end }}
-{{- $buckets }}
+{{- return $buckets -}}
 {{- end }}
 
 {{/*

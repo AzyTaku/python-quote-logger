@@ -171,6 +171,9 @@ kube-prometheus-stack:
   crds:
     enabled: false
 
+  minio:
+    enabled: true
+    
   loki:
     schemaConfig:
       configs:
