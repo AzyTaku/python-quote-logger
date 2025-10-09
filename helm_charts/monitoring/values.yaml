@@ -1,0 +1,40 @@
+# Loki Configuration
+loki:
+  auth_enabled: false
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: filesystem
+  persistence:
+    enabled: true
+    size: 1Gi
+  service:
+    type: ClusterIP
+    port: 3100
+
+# Alloy Configuration
+alloy:
+  alloy:
+    configMap:
+      content: |
+        local.file_logs "container_logs" {
+          path_targets = [{
+            __path__ = "/var/log/containers/*.log"
+          }]
+        }
+
+        loki.write "local_loki" {
+          endpoint {
+            url = "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+          }
+        }
+
+        loki.process "process_logs" {
+          stage.json { expressions = { log = "log" } }
+          forward_to = [loki.write.local_loki.receiver]
+        }
+
+        loki.source.file "kube_logs" {
+          targets = local.file_logs.container_logs.targets
+          forward_to = [loki.process.process_logs.receiver]
+        }
