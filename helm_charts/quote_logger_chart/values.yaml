@@ -172,16 +172,11 @@ kube-prometheus-stack:
     enabled: false
 
 loki:
-  schemaConfig:
-    configs:
-      - from: "2024-04-01"
-        store: boltdb-shipper
-        object_store: s3
-        schema: v13
-        index:
-          prefix: loki_index_
-          period: 24h
-
+  storage:
+    use_thanos_objstore: false
+    bucketNames:
+      chunks: loki-chunks
+      index: loki-index
   storage_config:
     boltdb_shipper:
       active_index_directory: /data/loki/index
@@ -193,40 +188,10 @@ loki:
       region: us-east-1
       insecure: true
 
-  ingester:
-    chunk_encoding: snappy
-
-  querier:
-    max_concurrent: 4
-
-  limits_config:
-    allow_structured_metadata: true
-    volume_enabled: true
-
-deploymentMode: simple-scalable
-
-backend:
-  replicas: 2
-read:
-  replicas: 2
-write:
-  replicas: 3
-
-minio:
-  enabled: true
-  persistence:
-    enabled: true
-    size: 10Gi
-  service:
-    type: ClusterIP
-
-gateway:
-  service:
-    type: LoadBalancer
-
 alloy:
   daemonset:
     enabled: true
   loki:
     enabled: true
     url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+
