@@ -171,22 +171,17 @@ kube-prometheus-stack:
   crds:
     enabled: false
 
+# Monolithic
 loki:
+  deploymentMode: single-process
   storage:
-    use_thanos_objstore: false
-    bucketNames:
-      chunks: loki-chunks
-      index: loki-index
-  storage_config:
-    boltdb_shipper:
-      active_index_directory: /data/loki/index
-      cache_location: /data/loki/cache
-      shared_store: s3
-    aws:
-      s3: s3://loki-bucket
-      endpoint: minio:9000
-      region: us-east-1
-      insecure: true
+    type: filesystem
+    filesystem:
+      directory: /data/loki
+  ingester:
+    chunk_idle_period: 5m
+    chunk_target_size: 1048576
+    max_chunk_age: 1h
 
 alloy:
   daemonset:
@@ -194,4 +189,31 @@ alloy:
   loki:
     enabled: true
     url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+
+
+
+# Scalable Loki
+# loki:
+#   storage:
+#     use_thanos_objstore: false
+#     bucketNames:
+#       chunks: loki-chunks
+#       index: loki-index
+#   storage_config:
+#     boltdb_shipper:
+#       active_index_directory: /data/loki/index
+#       cache_location: /data/loki/cache
+#       shared_store: s3
+#     aws:
+#       s3: s3://loki-bucket
+#       endpoint: minio:9000
+#       region: us-east-1
+#       insecure: true
+
+# alloy:
+#   daemonset:
+#     enabled: true
+#   loki:
+#     enabled: true
+#     url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
 
