@@ -175,23 +175,26 @@ kube-prometheus-stack:
 loki:
   enabled: true
   deploymentMode: single-process
-  config: |
-    schema_config:
-      configs:
-        - from: "2020-10-15"
-          store: boltdb-shipper
-          object_store: filesystem
-          schema: v11
-          index:
-            prefix: index_
-            period: 24h
-    storage_config:
-      boltdb_shipper:
-        active_index_directory: /data/loki/index
-        cache_location: /data/loki/cache
-        shared_store: filesystem
-      filesystem:
-        directory: /data/loki
+  useTestSchema: true
+  testSchemaConfig:
+    configs:
+      - from: "2020-10-15"
+        store: boltdb-shipper
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /data/loki
+    bucketNames:
+      chunks: "chunks"
+  ingester:
+    chunk_idle_period: 5m
+    chunk_target_size: 1048576
+    max_chunk_age: 1h
 
 alloy:
   daemonset:
@@ -199,8 +202,6 @@ alloy:
   loki:
     enabled: true
     url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
-
-
 
 
 # Scalable Loki
