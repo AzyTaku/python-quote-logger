@@ -173,6 +173,7 @@ kube-prometheus-stack:
 
 # Monolithic
 loki:
+  useTestSchema: true
   deploymentMode: single-process
   storage:
     type: filesystem
