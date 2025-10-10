@@ -173,6 +173,7 @@ kube-prometheus-stack:
 
 # Monolithic
 loki:
+# Added test schema true
   useTestSchema: true
   deploymentMode: single-process
   storage:
