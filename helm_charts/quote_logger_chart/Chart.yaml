@@ -27,10 +27,10 @@ dependencies:
   - name: kube-prometheus-stack
     version: "77.14.0"
     repository: https://prometheus-community.github.io/helm-charts
-  - name: loki
-    version: 6.42.0  # check the latest version with `helm search repo grafana/loki`
-    repository: https://grafana.github.io/helm-charts
-  - name: alloy
-    version: 1.3.0  # example; use latest from `helm search repo grafana/alloy`
-    repository: https://grafana.github.io/helm-charts
+  # - name: loki
+  #   version: 6.42.0  # check the latest version with `helm search repo grafana/loki`
+  #   repository: https://grafana.github.io/helm-charts
+  # - name: alloy
+  #   version: 1.3.0  # example; use latest from `helm search repo grafana/alloy`
+  #   repository: https://grafana.github.io/helm-charts
 
