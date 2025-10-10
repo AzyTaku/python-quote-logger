@@ -171,21 +171,33 @@ kube-prometheus-stack:
   crds:
     enabled: false
 
-# Monolithic
+# values.yaml for Loki Monolithic Deployment
+
 loki:
   enabled: true
   deploymentMode: single-process
   useTestSchema: true
+  schema_config: {}  # Empty schema_config to bypass validation
 
-  testSchemaConfig:
-    configs:
-      - from: "2020-10-15"
-        store: boltdb-shipper
-        object_store: filesystem
-        schema: v11
-        index:
-          prefix: index_
-          period: 24h
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /data/loki
+
+  ingester:
+    chunk_idle_period: 5m
+    chunk_target_size: 1048576
+    max_chunk_age: 1h
+
+  limits_config:
+    retention_period: 168h  # 7 days retention
+    max_streams_per_user: 10000
+    max_entries_limit_per_query: 5000
+    max_query_length: 720h  # 30 days
+
+  compactor:
+    working_directory: /data/loki/compactor
+    shared_store: filesystem
 
   schema_config:
     configs:
@@ -197,16 +209,101 @@ loki:
           prefix: index_
           period: 24h
 
-  storage:
-    type: filesystem
-    filesystem:
-      directory: /data/loki
+  storage_config:
+    boltdb_shipper:
+      active_index_directory: /data/loki/index
+      cache_location: /data/loki/cache
+      shared_store: filesystem
 
+  query_range:
+    split_queries_by_interval: 15m
+    cache_results: true
+    results_cache:
+      cache:
+        enable_fifocache: true
+        size_bytes: 104857600  # 100MB
+
+  frontend:
+    enabled: true
+    log_queries_longer_than: 5s
+    compress_responses: true
+
+singleBinary:
+  enabled: true
+  replicas: 1
+
+  backend:
+    replicas: 0
+  read:
+    replicas: 0
+  write:
+    replicas: 0
   ingester:
-    chunk_idle_period: 5m
-    chunk_target_size: 1048576
-    max_chunk_age: 1h
-    
+    replicas: 0
+  querier:
+    replicas: 0
+  queryFrontend:
+    replicas: 0
+  queryScheduler:
+    replicas: 0
+  distributor:
+    replicas: 0
+  compactor:
+    replicas: 0
+  indexGateway:
+    replicas: 0
+  bloomCompactor:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+  adminApi:
+    enabled: true
+    port: 8080
+    path: /admin
+
+  gateway:
+    enabled: true
+    port: 3100
+    path: /loki/api/v1/push
+
+
+# Monolithic
+# loki:
+#   enabled: true
+#   deploymentMode: single-process
+#   useTestSchema: true
+
+#   testSchemaConfig:
+#     configs:
+#       - from: "2020-10-15"
+#         store: boltdb-shipper
+#         object_store: filesystem
+#         schema: v11
+#         index:
+#           prefix: index_
+#           period: 24h
+
+#   schema_config:
+#     configs:
+#       - from: "2020-10-15"
+#         store: boltdb-shipper
+#         object_store: filesystem
+#         schema: v11
+#         index:
+#           prefix: index_
+#           period: 24h
+
+#   storage:
+#     type: filesystem
+#     filesystem:
+#       directory: /data/loki
+
+#   ingester:
+#     chunk_idle_period: 5m
+#     chunk_target_size: 1048576
+#     max_chunk_age: 1h
+
 alloy:
   daemonset:
     enabled: true
