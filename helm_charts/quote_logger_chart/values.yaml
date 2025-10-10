@@ -174,18 +174,8 @@ kube-prometheus-stack:
 # Monolithic
 loki:
   enabled: true
-  config:
-    schema_config:
-      configs:
-        - from: 2024-04-01
-          store: boltdb-shipper
-          object_store: filesystem
-          schema: v11
-          index:
-            prefix: loki_index_
-            period: 24h
-  useTestSchema: true
   deploymentMode: single-process
+  useTestSchema: true
   storage:
     type: filesystem
     filesystem:
@@ -195,13 +185,13 @@ loki:
     chunk_target_size: 1048576
     max_chunk_age: 1h
 
-
 alloy:
   daemonset:
     enabled: true
   loki:
     enabled: true
     url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+
 
 
 
